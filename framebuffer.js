@@ -15,9 +15,7 @@ this.setPixel = function(x, y, color) {
 }
 
 this.clear = function() {
-  for (var i = 0; i < 2073600; i++) {
-    fs.writeSync(this.framebuffer, new Uint8Array([0, 0, 0, 0]));
-  }
+  fs.writeSync(this.framebuffer, new Uint8Array(8294400), 0, 8294400, 0);
 }
 
 this.drawRectangle = function(x, y, width, height, color) {
