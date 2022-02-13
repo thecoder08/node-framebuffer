@@ -8,6 +8,12 @@ this.getPixel = function(x, y) {
   return ((y * 1920) + x) * 4;
 }
 
+this.setPixel = function(x, y, color) {
+  colorToDraw = [...color];
+  colorToDraw.push(0);
+  fs.writeSync(this.framebuffer, new Uint8Array(colorToDraw), 0, 4, this.getPixel(x, y));
+}
+
 this.clear = function() {
   for (var i = 0; i < 2073600; i++) {
     fs.writeSync(this.framebuffer, new Uint8Array([0, 0, 0, 0]));
@@ -15,12 +21,28 @@ this.clear = function() {
 }
 
 this.drawRectangle = function(x, y, width, height, color) {
-  color.push(0);
   for (var i = y; i < (y + height); i++) {
     for (var j = x; j < (x + width); j++) {
-      fs.writeSync(this.framebuffer, new Uint8Array(color), 0, 4, this.getPixel(j, i));
+      this.setPixel(j, i, color);
     }
   }
+}
+
+this.drawLine = function(x0, y0, x1, y1, color) {
+   var dx = Math.abs(x1 - x0);
+   var dy = Math.abs(y1 - y0);
+   var sx = (x0 < x1) ? 1 : -1;
+   var sy = (y0 < y1) ? 1 : -1;
+   var err = dx - dy;
+
+   while(true) {
+      this.setPixel(x0, y0, color);
+
+      if ((x0 === x1) && (y0 === y1)) break;
+      var e2 = 2*err;
+      if (e2 > -dy) { err -= dy; x0  += sx; }
+      if (e2 < dx) { err += dx; y0  += sy; }
+   }
 }
 
 }
