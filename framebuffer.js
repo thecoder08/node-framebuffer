@@ -1,21 +1,20 @@
-module.exports.Framebuffer = function(dev) {
+module.exports.Framebuffer = function(dev, width, height, depth) {
 
 var fs = require('fs');
 
 this.framebuffer = fs.openSync(dev, 'w');
-
-this.getPixel = function(x, y) {
-  return ((y * 1920) + x) * 4;
-}
+this.width = width;
+this.height = height;
+this.depth = depth;
 
 this.setPixel = function(x, y, color) {
   colorToDraw = [...color];
   colorToDraw.push(0);
-  fs.writeSync(this.framebuffer, new Uint8Array(colorToDraw), 0, 4, this.getPixel(x, y));
+  fs.writeSync(this.framebuffer, new Uint8Array(colorToDraw), 0, this.depth, ((y * this.width) + x) * this.depth);
 }
 
 this.clear = function() {
-  fs.writeSync(this.framebuffer, new Uint8Array(8294400), 0, 8294400, 0);
+  fs.writeSync(this.framebuffer, new Uint8Array(this.width * this.height * this.depth), 0, this.width * this.height * this.depth, 0);
 }
 
 this.drawRectangle = function(x, y, width, height, color) {
