@@ -17,18 +17,25 @@ this.clear = function() {
   fs.writeSync(this.framebuffer, new Uint8Array(this.width * this.height * this.depth), 0, this.width * this.height * this.depth, 0);
 }
 
-this.drawCircle = function() {
-  
-}
-this.drawRectangle = function(x, y, width, height, color) {
-  for (var i = y; i < (y + height); i++) {
-    for (var j = x; j < (x + width); j++) {
-      this.plot(j, i, color);
+this.circle = function(x, y, radius, color) {
+  for (var i = -radius; i < radius; i++) {
+    for (var j = -radius; j < radius; j++) {
+      if (j*j + i*i < radius*radius) {
+        this.plot(x + j, y + i, color);
+      }
     }
   }
 }
 
-this.drawLine = function(x0, y0, x1, y1, color) {
+this.rectangle = function(x, y, width, height, color) {
+  for (var i = 0; i < height; i++) {
+    for (var j = 0; j < width; j++) {
+      this.plot(x + j, y + i, color);
+    }
+  }
+}
+
+this.line = function(x0, y0, x1, y1, color) {
    var dx = Math.abs(x1 - x0);
    var dy = Math.abs(y1 - y0);
    var sx = (x0 < x1) ? 1 : -1;
