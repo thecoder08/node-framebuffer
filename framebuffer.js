@@ -8,7 +8,8 @@ this.height = height;
 this.depth = depth;
 
 this.plot = function(x, y, color) {
-  colorToDraw = [...color];
+  var colorToDraw = [...color];
+  colorToDraw.reverse();
   colorToDraw.push(0);
   fs.writeSync(this.framebuffer, new Uint8Array(colorToDraw), 0, this.depth, ((y * this.width) + x) * this.depth);
 }
@@ -68,12 +69,12 @@ this.line = function(x0, y0, x1, y1, color) {
 }
 
 module.exports.colors = {
-  red: [0, 0, 255],
-  blue: [255, 0, 0],
+  blue: [0, 0, 255],
+  red: [255, 0, 0],
   green: [0, 255, 0],
   white: [255, 255, 255],
   black: [0, 0, 0],
-  cyan: [255, 255, 0],
+  yellow: [255, 255, 0],
   magenta: [255, 0, 255],
-  yellow: [0, 255, 255]
+  cyan: [0, 255, 255]
 }
