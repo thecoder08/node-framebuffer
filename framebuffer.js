@@ -71,9 +71,9 @@ this.line = function(x0, y0, x1, y1, color) {
 
 }
 
-module.exports.FramebufferArray = function(buffer, width, height, depth) {
+module.exports.FramebufferArray = function(array, width, height, depth) {
     
-this.buffer = buffer;
+this.array = array;
 this.width = width;
 this.height = height;
 this.depth = depth;
@@ -83,12 +83,12 @@ this.plot = function(x, y, color) {
     return;
   }
   for (var i = 0; i < this.depth; i++) {
-      this.buffer[((y * this.width) + x) * this.depth + i] = color[i];
+      this.array[((y * this.width) + x) * this.depth + i] = color[i];
   }
 }
 
 this.clear = function() {
-  this.buffer.fill(0);
+  this.array.fill(0);
 }
 
 this.circle = function(x, y, radius, color) {
